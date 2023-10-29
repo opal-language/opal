@@ -26,14 +26,13 @@ def set_var_value(var_name: str, var_value: str):
         vars[var_name] = var_value
     except:
         throw_error("VariableError: Could not set value of " + var_name)
-
-
     
 def parseArg(arg: str):
     if arg.startswith("$"):
         return get_var_value(arg[1:])
     
-    arg = arg.replace("\\", " ")
+    arg = arg.replace(":", " ")
+    arg = arg.replace("\\n", "\n")
 
     if arg.startswith("&input-"):
         return input(arg[7:])
