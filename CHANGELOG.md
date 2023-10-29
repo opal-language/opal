@@ -47,3 +47,22 @@ Nothing.
 ### Removed in v0.0.3-alpha-stable
 
 Nothing.
+
+## Version 0.0.4-alpha-stable
+
+### Added in v0.0.4-alpha-stable
+
+* `utils.py` file with general shared utilities.
+* `parseArg(arg: str)` function for parsing an argument:
+  * If it's a variable, return the variable's value
+  * If it's the user input function, get user input
+  * Replace '\' with ' '
+* Introduce user input
+
+### Changed in v0.0.4-alpha-stable
+
+Nothing.
+
+### Removed in v0.0.4-alpha-stable
+
+Nothing.
