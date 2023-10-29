@@ -9,6 +9,7 @@
 
 import interpreter
 import argparse
+from utils import throw_error
 
 argParser = argparse.ArgumentParser()
 argParser.add_argument("-f", "--file", help="Filepath to Spark file (.spk)")
@@ -18,4 +19,7 @@ args = argParser.parse_args()
 filepath = args.file
 code = open(filepath, "r").read()
 
-interpreter.interpret(code)
+try:
+    interpreter.interpret(code)
+except Exception as e:
+    throw_error("Exception: " + e.__str__());

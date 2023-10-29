@@ -8,15 +8,10 @@
 
 
 import os
-import requests
+from utils import throw_error, get_request
 
 vars = {}
 imports = []
-
-# Throws an error
-def throw_error(error_message: str):
-    print(error_message)
-    exit(1)
 
 # Gets a variable's value
 def get_var_value(var_name: str):
@@ -32,22 +27,7 @@ def set_var_value(var_name: str, var_value: str):
     except:
         throw_error("VariableError: Could not set value of " + var_name)
 
-# Preforms a GET request
-def get_request(url: str):
-    try:
-        # Send a GET request to the specified URL
-        response = requests.get(url)
-        
-        # Check if the request was successful (status code 200)
-        if response.status_code == 200:
-            # Return the content of the response
-            return response.text
-        else:
-            # If the request was not successful, raise an exception
-            response.raise_for_status()
-    except Exception as e:
-        # Handle exceptions (e.g., request errors, network errors)
-        return f"An error occurred: {e}"
+
     
 def parseArg(arg: str):
     if arg.startswith("$"):
@@ -99,5 +79,7 @@ def interpret(code: str):
                 throw_error("You cannot use HTTP requests without importing the 'http' module.")
             
             set_var_value(tokens[2], get_request(parseArg(tokens[1])))
+        elif tokens[0] == "exec":
+            interpret(parseArg(tokens[1]))
         else:
             throw_error("Unexpected keyword \"" + tokens[0] + "\".")
