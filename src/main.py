@@ -8,18 +8,19 @@
 
 
 import interpreter
-import argparse
+import sys
 from utils import throw_error
 
-argParser = argparse.ArgumentParser()
-argParser.add_argument("-f", "--file", help="Filepath to Spark file (.spk)")
+argv = sys.argv
 
-args = argParser.parse_args()
+if argv[0].endswith("main.py"):
+    filepath = argv[1]
+else:
+    filepath = argv[0]
 
-filepath = args.file
 code = open(filepath, "r").read()
 
 try:
     interpreter.interpret(code)
 except Exception as e:
-    throw_error("Exception: " + e.__str__());
+    throw_error("Exception: " + e.__str__())

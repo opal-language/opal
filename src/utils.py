@@ -21,3 +21,10 @@ def get_request(url: str):
     except Exception as e:
         # Handle exceptions (e.g., request errors, network errors)
         return f"An error occurred: {e}"
+    
+def is_number(string: str):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
