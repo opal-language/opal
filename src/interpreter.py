@@ -8,16 +8,18 @@
 
 
 import os
-from utils import throw_error, get_request, is_number
+from utils import throw_error, get_request
 
-vars = {}
+vars = {
+    "variables": {},
+}
 imports = []
 
 
 # Gets a variable's value
 def get_var_value(var_name: str):
     try:
-        return vars[var_name]
+        return vars["variables"][var_name]
     except:
         throw_error("VariableError: Variable " + var_name + " does not exist.")
 
@@ -25,7 +27,7 @@ def get_var_value(var_name: str):
 # Sets a variable's value, creating one if it doesn't exist
 def set_var_value(var_name: str, var_value: str):
     try:
-        vars[var_name] = var_value
+        vars["variables"][var_name] = var_value
     except:
         throw_error("VariableError: Could not set value of " + var_name)
 
@@ -34,19 +36,8 @@ def parseArg(arg: str):
     if arg.startswith("$"):
         return get_var_value(arg[1:])
 
-    if (arg.startswith('"') and arg.endswith('"')) or (
-        arg.startswith("'") and arg.endswith("'")
-    ):
-        return arg[1:-1]
-    
     if arg.startswith("&input-"):
         return input(arg[7:])
-
-    if is_number(arg):
-        return arg
-    else:
-        throw_error("StringError: String must be enclosed in quotes or double quotes.")
-
 
 def interpret(code: str):
     codelines = code.split("\n")
@@ -56,10 +47,10 @@ def interpret(code: str):
         if line.startswith("//") or line == "":
             continue
 
-        tokens = line.split(None, 1)  # Split the line into tokens, max 1 split
+        tokens = line.split(None, 1)
         _tokens = line.split()
         command = _tokens[0]
-        args = parseArg(tokens[1]) if len(tokens) > 1 else ""  # Parse the arguments
+        args = parseArg(tokens[1]) if len(tokens) > 1 else ""
 
         if command == "print":
             print(parseArg(args))
@@ -100,5 +91,7 @@ def interpret(code: str):
             set_var_value(_tokens[2], get_request(parseArg(_tokens[1])))
         elif command == "exec":
             interpret(parseArg(tokens[1]))
+        elif command == "exit":
+            exit(0)
         else:
             throw_error('Unexpected keyword "' + command + '".')
